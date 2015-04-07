@@ -1,7 +1,7 @@
 
 CXXFLAGS += -I. -g -DDEBUG
 
-all: cipherchallenge test_j3kf test_j3ktikk4
+all: cipherchallenge test_j3kf test_j3ktikk4 tunny_cmd
 
 clean:
 	-rm -f cipherchallenge test_j3ktikk4 test_j3kf
@@ -23,6 +23,12 @@ CIPHERCHALLENGE_OBJECTS=cipherchallenge.o ${TUNNY_OBJECTS}
 
 cipherchallenge: ${CIPHERCHALLENGE_OBJECTS}
 	${CXX} ${CXXFLAGS} ${CIPHERCHALLENGE_OBJECTS} -o $@
+
+TUNNY_CMD_OBJECTS=tunny_cmd.o ${TUNNY_OBJECTS}
+
+tunny_cmd: ${TUNNY_CMD_OBJECTS}
+	${CXX} ${CXXFLAGS} ${TUNNY_CMD_OBJECTS} -o $@ \
+		-lboost_program_options
 
 depend:
 	makedepend -f Makefile -Y. -I.  *.C
