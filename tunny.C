@@ -125,6 +125,12 @@ void tunny::set_chi_positions(unsigned int w1, unsigned int w2,
 	w1--; w2--; w3--; w4--; w5--;
     }
 
+    xp1 = x1.begin() + w1;
+    xp2 = x2.begin() + w2;
+    xp3 = x3.begin() + w3;
+    xp4 = x4.begin() + w4;
+    xp5 = x5.begin() + w5;
+
 }
 
 void tunny::set_psi_positions(unsigned int w1, unsigned int w2, 
@@ -135,6 +141,12 @@ void tunny::set_psi_positions(unsigned int w1, unsigned int w2,
     if (count_from_one) {
 	w1--; w2--; w3--; w4--; w5--;
     }
+
+    sp1 = s1.begin() + w1;
+    sp2 = s2.begin() + w2;
+    sp3 = s3.begin() + w3;
+    sp4 = s4.begin() + w4;
+    sp5 = s5.begin() + w5;
 
 }
 
