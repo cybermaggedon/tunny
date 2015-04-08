@@ -1,4 +1,5 @@
 
+#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -137,13 +138,28 @@ public:
     void set_chi_positions(unsigned int w1, unsigned int w2, 
 			   unsigned int w3, unsigned int w4,
 			   unsigned int w5, bool count_from_one=true);
+    void set_chi_positions(const std::vector<unsigned int>& s,
+			   bool count_from_one=true) {
+	if (s.size() != 5) throw std::out_of_range("Vector should be size 5");
+	set_chi_positions(s[0], s[1], s[2], s[3], s[4], count_from_one);
+    }
 
     void set_psi_positions(unsigned int w1, unsigned int w2, 
 			   unsigned int w3, unsigned int w4,
 			   unsigned int w5, bool count_from_one=true);
+    void set_psi_positions(const std::vector<unsigned int>& s,
+			   bool count_from_one=true) {
+	if (s.size() != 5) throw std::out_of_range("Vector should be size 5");
+	set_psi_positions(s[0], s[1], s[2], s[3], s[4], count_from_one);
+    }
 
     void set_mu_positions(unsigned int w1, unsigned int w2,
 			  bool count_from_one=true);
+    void set_mu_positions(const std::vector<unsigned int>& s,
+			  bool count_from_one=true) {
+	if (s.size() != 2) throw std::out_of_range("Vector should be size 2");
+	set_mu_positions(s[0], s[1], count_from_one);
+    }
 
     void decrypt(const std::vector<tpchar_t>& in,
 		 std::vector<tpchar_t>& out) {
