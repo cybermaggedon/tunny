@@ -71,22 +71,25 @@ int main()
     t.set_mu_positions(59, 26);
     t.set_psi_positions(32, 36, 11, 9, 43);
     
-    t.limitation = tunny::x2lim;
+    t.set_limitation(tunny::x2lim);
 
 // ----------------------------------------------------------------------------
 
-    tpchar_t prev = 0;
+    tpchar_t prev_in = 0;
+    tpchar_t prev_out = 0;
 
     for(int i = 0; i < cipher.size(); i++) {
 	tpchar_t v;
 
-	t.tick(prev);
+	t.step(prev_in, prev_out);
 
-	prev = cipher[i];
+	prev_in = cipher[i];
 
 	v = cipher[i];
 	v ^= t.get_chi();
 	v ^= t.get_psi();
+
+	prev_out = v;
 
 	std::vector<unsigned int> chi_pos, psi_pos, mu_pos;
 	t.get_chi_positions(chi_pos);

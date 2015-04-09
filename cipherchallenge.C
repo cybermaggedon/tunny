@@ -75,11 +75,12 @@ int main()
     t.set_mu_positions(21, 11);
     t.set_psi_positions(9, 27, 17, 22, 25);
 
-    t.limitation = tunny::x2lim;
+    t.set_limitation(tunny::x2lim);
 
 // ----------------------------------------------------------------------------
 
-    tpchar_t prev = 0;
+    tpchar_t prev_in = 0;
+    tpchar_t prev_out = 0;
     
     std::vector<tpchar_t> plain;
 
@@ -92,8 +93,8 @@ int main()
 	t.get_psi_positions(psi_pos);
 	t.get_mu_positions(mu_pos);
 
-	t.tick(prev);
-	prev = cipher[i];
+	t.step(prev_in, prev_out);
+	prev_in = cipher[i];
 
 	v = cipher[i];
 
@@ -103,6 +104,8 @@ int main()
 	tpchar_t mu = t.get_mu();
 	w ^= chi;
 	w ^= psi;
+
+	prev_out = w;
 
 	bool bm = t.get_bm();
 	bool tm = t.get_tm();

@@ -46,6 +46,11 @@ int main(int argc, char** argv)
 	("mu.settings", po::value< std::vector<unsigned int> >()->multitoken(),
 	 "My wheel settings")
 	("config,c", po::value<std::string>(), "set configuration file")
+	("nolim,0", "no limitation")
+	("x2lim,1", "chi 2 1-back limitation")
+	("s1lim,2", "psi 1 1-back limitation")
+	("x2p5lim,3", "chi 2, plain 5 limitation")
+	("x2s1p5lim,4", "chi 2, psi 1, plain 5 limitation")
 	;
 
     po::variables_map vm;
@@ -136,6 +141,13 @@ int main(int argc, char** argv)
     if (vm.count("chi.5"))
 	chi5 = vm["chi.5"].as<std::string>();
 
+    tunny:: limitation_type lim = tunny::nolim;
+    if (vm.count("nolim")) lim = tunny::nolim;
+    if (vm.count("x2lim")) lim = tunny::x2lim;
+    if (vm.count("s1lim")) lim = tunny::s1lim;
+    if (vm.count("x2p5lim")) lim = tunny::x2p5lim;
+    if (vm.count("x2s1p5lim")) lim = tunny::x2s1p5lim;
+
     if (vm.count("psi.1"))
 	psi1 = vm["psi.1"].as<std::string>();
     if (vm.count("psi.2"))
@@ -193,6 +205,15 @@ int main(int argc, char** argv)
 	std::copy(mu_settings.begin(), mu_settings.end(), out_it);
 	std::cerr << std::endl;
 
+	std::cerr << "Limitation: ";
+	if (lim == tunny::nolim) std::cerr << "no limitation";
+	if (lim == tunny::x2lim) std::cerr << "chi-2 limitation";
+	if (lim == tunny::s1lim) std::cerr << "psi-1 limitation";
+	if (lim == tunny::x2p5lim) std::cerr << "chi-2 plain-5 limitation";
+	if (lim == tunny::x2s1p5lim) 
+	    std::cerr << "chi-2 psi-1 plain-5 limitation";
+	std::cerr << std::endl;
+	
     }
 
     tunny t;
@@ -205,7 +226,9 @@ int main(int argc, char** argv)
     t.set_psi_positions(psi_settings);
     t.set_mu_positions(mu_settings);
 
-    t.limitation = tunny::x2lim;
+    t.set_limitation(lim);
+
+    t.set_encrypt_mode(encrypt);
 
     std::string intext;
     
@@ -223,8 +246,9 @@ int main(int argc, char** argv)
     std::vector<tpchar_t> plain;
 
     teleprinter::from_string(intext, cipher);
-    tpchar_t prev = 0;
-    
+    tpchar_t prev_in = 0;
+    tpchar_t prev_out = 0;
+
     for(int i = 0; i < cipher.size(); i++) {
 	
 	tpchar_t v;
@@ -234,8 +258,8 @@ int main(int argc, char** argv)
 	t.get_psi_positions(psi_pos);
 	t.get_mu_positions(mu_pos);
 
-	t.tick(prev);
-	prev = cipher[i];
+	t.step(prev_in, prev_out);
+	prev_in = cipher[i];
 
 	v = cipher[i];
 
@@ -245,6 +269,8 @@ int main(int argc, char** argv)
 	tpchar_t mu = t.get_mu();
 	w ^= chi;
 	w ^= psi;
+
+	prev_out = w;
 
 	bool bm = t.get_bm();
 	bool tm = t.get_tm();
@@ -298,7 +324,7 @@ int main(int argc, char** argv)
     std::string outtext;
     teleprinter::to_string(plain, outtext);
 
-    *out << outtext << std::endl;
+    *out << outtext;
 
     exit(0);
 

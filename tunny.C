@@ -5,7 +5,7 @@
 
 #include <colossus/tunny.h>
 
-void tunny::tick(tpchar_t plain) 
+void tunny::step(tpchar_t input, tpchar_t output) 
 {
 
     tpchar_t x;
@@ -30,6 +30,15 @@ void tunny::tick(tpchar_t plain)
     
 	if (limitation == x2lim) {
 	    lim ^= ((cur_chi & (1 << 3)) != 0);
+	} else if (limitation == s1lim) {
+	    lim ^= ((cur_psi & (1 << 4)) != 0);
+	} else if (limitation == x2p5lim) {
+	    lim ^= ((cur_chi & (1 << 4)) != 0);
+	    lim ^= ((prev_plain & 1) != 0);
+	} else if (limitation == x2s1p5lim) {
+	    lim ^= ((cur_chi & (1 << 4)) != 0);
+	    lim ^= ((cur_psi & (1 << 4)) != 0);
+	    lim ^= ((prev_plain & 1) != 0);
 	}
 
 	if ((cur_bm == false) && lim)
@@ -39,8 +48,12 @@ void tunny::tick(tpchar_t plain)
 
     }
 
-    prev2_input = prev_input;
-    prev_input = plain;
+	prev2_plain = prev_plain;
+
+    if (encrypt)
+	prev_plain = input;
+    else
+	prev_plain = output;
 
     // Chi seems to be delayed by 1 character.
 
@@ -57,12 +70,6 @@ void tunny::tick(tpchar_t plain)
     prev_chi = cur_chi;
     cur_chi = x;
 
-/*
-    prev_chi = cur_chi;
-    cur_chi = next_chi;
-    next_chi = x;
-*/
-    
     x = 0;
     if (*sp1) x |= 16;
     if (*sp2) x |= 8;
