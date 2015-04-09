@@ -30,15 +30,16 @@ void tunny::step(tpchar_t input, tpchar_t output)
     
 	if (limitation == x2lim) {
 	    lim ^= ((cur_chi & (1 << 3)) != 0);
-	} else if (limitation == s1lim) {
+	} else if (limitation == x2s1lim) {
+	    lim ^= ((cur_chi & (1 << 3)) != 0);
 	    lim ^= ((cur_psi & (1 << 4)) != 0);
 	} else if (limitation == x2p5lim) {
 	    lim ^= ((cur_chi & (1 << 4)) != 0);
-	    lim ^= ((prev_plain & 1) != 0);
+	    lim ^= ((prev2_plain & 1) != 0);
 	} else if (limitation == x2s1p5lim) {
 	    lim ^= ((cur_chi & (1 << 4)) != 0);
 	    lim ^= ((cur_psi & (1 << 4)) != 0);
-	    lim ^= ((prev_plain & 1) != 0);
+	    lim ^= ((prev2_plain & 1) != 0);
 	}
 
 	if ((cur_bm == false) && lim)

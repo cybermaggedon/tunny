@@ -42,10 +42,10 @@ public:
     // stream from basic motor (BM) and other wheels.  Values are:
     // nolim: No limitation in use.  TM = BM.
     // x2lim: Feedback from second chi wheel, one step back.
-    // s1lim: Feedback from first psi wheel, one step back.
+    // x2s1lim: Feedback from first psi wheel, one step back.
     // x2p5lim: Feedback from 2nd chi wheel and 5th plaintext impulse.
     // x2s1p5lim: Feedback from 2nd chi, 1st psi and 5th plaintext impulse.
-    typedef enum { nolim, x2lim, s1lim, x2p5lim, x2s1p5lim } limitation_type;
+    typedef enum { nolim, x2lim, x2s1lim, x2p5lim, x2s1p5lim } limitation_type;
 
 private:
 

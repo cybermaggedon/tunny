@@ -47,10 +47,10 @@ int main(int argc, char** argv)
 	 "My wheel settings")
 	("config,c", po::value<std::string>(), "set configuration file")
 	("nolim,0", "no limitation")
-	("x2lim,1", "chi 2 1-back limitation")
-	("s1lim,2", "psi 1 1-back limitation")
-	("x2p5lim,3", "chi 2, plain 5 limitation")
-	("x2s1p5lim,4", "chi 2, psi 1, plain 5 limitation")
+	("x2lim,1", "chi-2 1-back limitation")
+	("x2s1lim,2", "chi-2 psi-1 1-back limitation")
+	("x2p5lim,3", "chi-2, plain-5 limitation")
+	("x2s1p5lim,4", "chi-2, psi-1, plain-5 limitation")
 	;
 
     po::variables_map vm;
@@ -144,7 +144,7 @@ int main(int argc, char** argv)
     tunny:: limitation_type lim = tunny::nolim;
     if (vm.count("nolim")) lim = tunny::nolim;
     if (vm.count("x2lim")) lim = tunny::x2lim;
-    if (vm.count("s1lim")) lim = tunny::s1lim;
+    if (vm.count("x2s1lim")) lim = tunny::x2s1lim;
     if (vm.count("x2p5lim")) lim = tunny::x2p5lim;
     if (vm.count("x2s1p5lim")) lim = tunny::x2s1p5lim;
 
@@ -208,7 +208,7 @@ int main(int argc, char** argv)
 	std::cerr << "Limitation: ";
 	if (lim == tunny::nolim) std::cerr << "no limitation";
 	if (lim == tunny::x2lim) std::cerr << "chi-2 limitation";
-	if (lim == tunny::s1lim) std::cerr << "psi-1 limitation";
+	if (lim == tunny::x2s1lim) std::cerr << "psi-1 limitation";
 	if (lim == tunny::x2p5lim) std::cerr << "chi-2 plain-5 limitation";
 	if (lim == tunny::x2s1p5lim) 
 	    std::cerr << "chi-2 psi-1 plain-5 limitation";
