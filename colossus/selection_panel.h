@@ -1,7 +1,7 @@
 
 #include <colossus/elemental.h>
 
-class bus : public clockable, public input {
+class selection_panel : public clockable, public input {
 private:
     input& z;
     cipher_stream& c;
@@ -15,7 +15,7 @@ public:
 
     tpchar_t old_z, old_x, old_y;
 
-    bus(input& z, cipher_stream& c) : z(z), c(c) {
+    selection_panel(input& z, cipher_stream& c) : z(z), c(c) {
 	z_mode = x_mode = y_mode = off;
 	old_z = old_x = old_y = 0;
     }

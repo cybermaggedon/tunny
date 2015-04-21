@@ -9,8 +9,8 @@
 #include <colossus/tunny.h>
 #include <colossus/teleprinter.h>
 #include <colossus/paper_tape.h>
-#include <colossus/bus.h>
-#include <colossus/logic_unit.h>
+#include <colossus/selection_panel.h>
+#include <colossus/q_panel.h>
 #include <colossus/counting_unit.h>
 
 class colossus {
@@ -18,8 +18,13 @@ private:
 public:
 
     paper_tape z;
-    bus q;
-    logic_unit panel;
+
+    // Selection panel
+    selection_panel q;
+
+    // Q panel
+    q_panel panel;
+
     counting_unit c;
     tunny l;
 
@@ -58,7 +63,7 @@ public:
     }
 
     void tick() {
-	l.tick(z.get_value());
+	tpchar_t w = l.process(z.get_value());
 	z.tick();
 	q.tick();
 	panel.tick();

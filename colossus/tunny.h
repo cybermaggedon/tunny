@@ -249,4 +249,16 @@ public:
 
     }
 
+    tpchar_t process(tpchar_t in) {
+
+	tpchar_t out = in;
+	out ^= get_chi();
+	out ^= get_psi();
+
+	step(in, out);
+
+	return out;
+
+    }
+
 };

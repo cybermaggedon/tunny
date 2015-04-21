@@ -3,12 +3,12 @@
 
 #include <map>
 
-class simple_logic : public clockable {
+class comparison_unit : public clockable {
 private:
     counters* cntrs;
     input* in;
 public:
-    simple_logic(input& in, counters& c) : in(&in), cntrs(&c) { 
+    comparison_unit(input& in, counters& c) : in(&in), cntrs(&c) { 
 	counting.resize(cntrs->num_counters);
     }
     virtual void tick();
@@ -22,12 +22,12 @@ public:
 
 };
 
-class adder_logic : public clockable {
+class addition_unit : public clockable {
 private:
     counters* cntrs;
     input* in;
 public:
-    adder_logic(input& in, counters& c) : in(&in), cntrs(&c) { }
+    addition_unit(input& in, counters& c) : in(&in), cntrs(&c) { }
 
     virtual void tick();
 
@@ -40,7 +40,7 @@ public:
 
 };
 
-class logic_unit : public clockable {
+class q_panel : public clockable {
 private:
     input& in;
     counters& cntrs;
@@ -48,15 +48,15 @@ public:
     static const int num_simples = 10;
     static const int num_adders = 5;
 
-    std::vector<simple_logic> simples;
-    std::vector<adder_logic> adders;
+    std::vector<comparison_unit> simples;
+    std::vector<addition_unit> adders;
 
-    logic_unit(input& i, counters& c) : in(i), cntrs(c) {
+    q_panel(input& i, counters& c) : in(i), cntrs(c) {
 	for(int i = 0; i < num_simples; i++) {
-	    simples.push_back(simple_logic(in, c));
+	    simples.push_back(comparison_unit(in, c));
 	}
 	for(int i = 0; i < num_adders; i++)
-	    adders.push_back(adder_logic(in, c));
+	    adders.push_back(addition_unit(in, c));
     }
 
 

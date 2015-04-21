@@ -1,33 +1,27 @@
 
 CXXFLAGS += -I. -g -DDEBUG
 
-all: cipherchallenge test_j3kf test_j3ktikk4 tunny_cmd
+all: tunny vcolossus
 
 clean:
-	-rm -f cipherchallenge test_j3ktikk4 test_j3kf
+	-rm -f tunny vcolossus
 	-rm -f *.o
 
 TUNNY_OBJECTS=teleprinter.o tunny.o
 
-TEST_J3KF_OBJECTS=test_j3kf.o ${TUNNY_OBJECTS}
+TUNNY_CMD_OBJECTS=tunny_cmd.o
 
-test_j3kf: ${TEST_J3KF_OBJECTS}
-	${CXX} ${CXXFLAGS} ${TEST_J3KF_OBJECTS} -o $@
+COLOSSUS_OBJECTS=q_panel.o selection_panel.o colossus.o
 
-TEST_J3KTIKK4_OBJECTS=test_j3ktikk4.o ${TUNNY_OBJECTS}
+COLOSSUS_CMD_OBJECTS=colossus_cmd.o
 
-test_j3ktikk4: ${TEST_J3KTIKK4_OBJECTS}
-	${CXX} ${CXXFLAGS} ${TEST_J3KTIKK4_OBJECTS} -o $@
+tunny: ${TUNNY_CMD_OBJECTS} ${TUNNY_OBJECTS}
+	${CXX} ${CXXFLAGS} ${TUNNY_CMD_OBJECTS} ${TUNNY_OBJECTS} -o $@ \
+		-lboost_program_options
 
-CIPHERCHALLENGE_OBJECTS=cipherchallenge.o ${TUNNY_OBJECTS}
-
-cipherchallenge: ${CIPHERCHALLENGE_OBJECTS}
-	${CXX} ${CXXFLAGS} ${CIPHERCHALLENGE_OBJECTS} -o $@
-
-TUNNY_CMD_OBJECTS=tunny_cmd.o ${TUNNY_OBJECTS}
-
-tunny_cmd: ${TUNNY_CMD_OBJECTS}
-	${CXX} ${CXXFLAGS} ${TUNNY_CMD_OBJECTS} -o $@ \
+vcolossus: ${COLOSSUS_CMD_OBJECTS} ${COLOSSUS_OBJECTS} ${TUNNY_OBJECTS}
+	${CXX} ${CXXFLAGS} ${COLOSSUS_CMD_OBJECTS} ${COLOSSUS_OBJECTS} \
+		${TUNNY_OBJECTS} -o $@ \
 		-lboost_program_options
 
 depend:
@@ -35,7 +29,13 @@ depend:
 
 # DO NOT DELETE
 
+colossus.o: ./colossus/colossus.h ./colossus/elemental.h
+colossus.o: ./colossus/teleprinter.h ./colossus/tunny.h
+colossus.o: ./colossus/paper_tape.h ./colossus/selection_panel.h
+colossus.o: ./colossus/q_panel.h ./colossus/counting_unit.h
+colossus_cmd.o: ./colossus/teleprinter.h ./colossus/tunny.h
+colossus_cmd.o: ./colossus/elemental.h
 teleprinter.o: ./colossus/teleprinter.h
-test_j3kf.o: ./colossus/tunny.h ./colossus/teleprinter.h
-test_j3ktikk4.o: ./colossus/tunny.h ./colossus/teleprinter.h
-tunny.o: ./colossus/tunny.h ./colossus/teleprinter.h
+tunny.o: ./colossus/tunny.h ./colossus/teleprinter.h ./colossus/elemental.h
+tunny_cmd.o: ./colossus/teleprinter.h ./colossus/tunny.h
+tunny_cmd.o: ./colossus/elemental.h

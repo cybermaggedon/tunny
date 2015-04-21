@@ -1,7 +1,7 @@
 
-#include <colossus/logic_unit.h>
+#include <colossus/q_panel.h>
 
-void simple_logic::tick()
+void comparison_unit::tick()
 {
 	
     tpchar_t v = in->get_value();
@@ -21,7 +21,7 @@ void simple_logic::tick()
 
 }
 
-void adder_logic::tick()
+void addition_unit::tick()
 {
 	
     if (mask == 0) return;

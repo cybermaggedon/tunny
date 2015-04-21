@@ -1,9 +1,9 @@
 
 #include <iostream>
 
-#include <colossus/bus.h>
+#include <colossus/selection_panel.h>
 
-void bus::tick() {
+void selection_panel::tick() {
 
     tpchar_t v = 0;
 
